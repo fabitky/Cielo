@@ -1,0 +1,256 @@
+/* ============================================================
+   Cielo Sur — Estilos de la carta del cielo
+   Vista circular + panel mínimo (play + hora + reset + slider).
+   ============================================================ */
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  max-width: min(100%, 52vh, 480px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  touch-action: none;
+}
+
+.chart-wrap canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+.chart-wrap canvas:active { cursor: grabbing; }
+
+/* Overlay superior: solo botones de capas */
+.chart-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.chart-overlay .co-top {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.chart-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 7, 13, 0.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--line-2);
+  color: var(--tx-md);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background .15s var(--ease), color .15s var(--ease), border-color .15s var(--ease);
+}
+.chart-btn:active { transform: scale(0.94); }
+.chart-btn.on {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(125, 211, 252, 0.10);
+}
+html.night-red .chart-btn { background: rgba(10, 0, 0, 0.82); }
+
+.chart-hint {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 78%;
+  background: rgba(5, 7, 13, 0.88);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  padding: 12px 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--tx-md);
+  text-align: center;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity .6s var(--ease);
+  z-index: 3;
+}
+.chart-hint.hide { opacity: 0; }
+html.night-red .chart-hint { background: rgba(10, 0, 0, 0.9); }
+
+/* ============================================================
+   Panel de control (mínimo)
+   ============================================================ */
+.sim-panel {
+  margin-top: 12px;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sim-panel.playing {
+  border-color: rgba(125, 211, 252, 0.45);
+  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.15), 0 0 20px rgba(125, 211, 252, 0.08);
+}
+
+.sim-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sim-play {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  color: var(--tx-hi);
+  transition: background .15s var(--ease), color .15s var(--ease), border-color .15s var(--ease), transform .1s var(--ease);
+  flex: 0 0 auto;
+}
+.sim-play:active { transform: scale(0.94); }
+.sim-play.playing {
+  background: var(--accent);
+  color: #05202c;
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(125, 211, 252, 0.35);
+}
+.sim-play svg { display: block; }
+
+.sim-time {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.1;
+}
+.sim-time-value {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--tx-hi);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.sim-time-delta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--tx-lo);
+  letter-spacing: 0.02em;
+  margin-top: 1px;
+}
+.sim-time-delta.now { color: var(--accent); }
+.sim-time-delta.future { color: var(--accent-2); }
+.sim-time-delta.past { color: var(--warm); }
+
+.sim-reset {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--tx-lo);
+  transition: background .15s var(--ease), color .15s var(--ease);
+  flex: 0 0 auto;
+}
+.sim-reset:active { background: var(--bg-2); color: var(--tx-md); }
+
+.sim-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+}
+.sim-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg,
+    rgba(251, 191, 36, 0.40) 0%,
+    rgba(251, 191, 36, 0.40) 49%,
+    rgba(125, 211, 252, 0.70) 50%,
+    rgba(125, 211, 252, 0.40) 51%,
+    rgba(167, 139, 250, 0.40) 100%);
+}
+.sim-range::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-3);
+}
+.sim-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg-0);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 12px rgba(125, 211, 252, 0.5);
+  margin-top: -7px;
+  cursor: grab;
+}
+.sim-range::-moz-range-thumb {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg-0);
+  box-shadow: 0 0 0 1px var(--accent);
+  cursor: grab;
+}
+.sim-range:active::-webkit-slider-thumb { cursor: grabbing; }
+
+/* Info compacta bajo el panel */
+.chart-info {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--tx-lo);
+}
+.chart-info .ci-pill {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+/* Leyenda */
+.chart-legend {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--tx-lo);
+  flex-wrap: wrap;
+}
+.chart-legend .lg-item { display: flex; align-items: center; gap: 6px; }
+.chart-legend .lg-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #e8ecf4;
+  box-shadow: 0 0 6px currentColor;
+}
+.chart-legend .lg-dot.planet { background: var(--warm); box-shadow: 0 0 6px var(--warm); }
+.chart-legend .lg-dot.dso {
+  background: transparent;
+  border: 1.5px solid var(--accent-2);
+  box-shadow: 0 0 6px var(--accent-2);
+}
