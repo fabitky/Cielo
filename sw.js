@@ -1,6 +1,6 @@
 "use strict";
 
-var CACHE_NAME = "cielo-v3";
+var CACHE_NAME = "cielo-v4";
 
 var ASSETS = [
   "./",

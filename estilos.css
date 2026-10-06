@@ -1,77 +1,87 @@
 /* =========================================================================
-   ALMANAQUE DEL CIELO · Rediseño "Aurora"
-   Design System — Dark Cosmic + Night Red Mode
+   ALMANAQUE DEL CIELO · Rediseño "Nebula"
+   Dashboard + tabs superiores · Flexbox layout · Dark Cosmic
    ========================================================================= */
 
+/* ============================================================
+   1. TOKENS
+   ============================================================ */
 :root {
-  /* Superficies */
-  --bg: #05070f;
-  --bg-1: #0a0f1e;
-  --bg-2: #111a2e;
-  --bg-3: #1a2440;
-  --border: #1a2a44;
-  --border-2: #24395c;
-  --glass: rgba(10, 15, 30, 0.72);
+  /* Fondo */
+  --bg: #04060f;
+  --bg-1: #080c18;
+  --bg-2: #0f1628;
+  --bg-3: #1a2340;
+
+  /* Líneas */
+  --line: #1a2440;
+  --line-2: #2a3a60;
 
   /* Texto */
-  --fg: #f5f8ff;
-  --fg-2: #a8b5cc;
-  --fg-3: #6b7a96;
+  --fg: #f0f4ff;
+  --fg-2: #9aa8c4;
+  --fg-3: #5a6a8a;
 
   /* Acentos */
-  --primary: #4cc9f0;
-  --primary-2: #38bdf8;
-  --primary-soft: rgba(76, 201, 240, 0.12);
-  --primary-glow: rgba(76, 201, 240, 0.35);
-  --secondary: #b794f4;
-  --gold: #ffd166;
-  --success: #4ade80;
-  --warning: #fb923c;
-  --danger: #f87171;
+  --primary: #22d3ee;
+  --primary-2: #06b6d4;
+  --primary-soft: rgba(34, 211, 238, 0.14);
+  --primary-glow: rgba(34, 211, 238, 0.35);
 
-  /* Radii */
-  --r-1: 8px;
-  --r-2: 14px;
-  --r-3: 20px;
+  --indigo: #818cf8;
+  --violet: #a78bfa;
+  --pink: #f472b6;
+  --gold: #fbbf24;
+  --green: #34d399;
+  --red: #f87171;
+
+  /* Radios */
+  --r-1: 10px;
+  --r-2: 16px;
+  --r-3: 22px;
   --r-4: 28px;
   --r-pill: 999px;
 
-  /* Shadows */
-  --sh-1: 0 2px 6px rgba(0,0,0,0.25);
-  --sh-2: 0 8px 24px rgba(0,0,0,0.4);
-  --sh-3: 0 16px 48px rgba(0,0,0,0.55);
+  /* Sombras */
+  --sh-1: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --sh-2: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --sh-3: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --sh-glow: 0 0 24px var(--primary-glow);
 
   /* Layout */
-  --header-h: 60px;
-  --nav-h: 76px;
+  --hdr-h: 56px;
+  --tabs-h: 56px;
 }
 
-/* ---- Modo noche rojo (tokenizado) ---- */
+/* Modo rojo nocturno — tokenizado */
 body.redmode {
-  --bg: #080000;
-  --bg-1: #140202;
-  --bg-2: #1e0404;
-  --bg-3: #2a0606;
-  --border: #3d0a0a;
-  --border-2: #5a1010;
-  --glass: rgba(20, 2, 2, 0.82);
+  --bg: #070000;
+  --bg-1: #0f0202;
+  --bg-2: #180404;
+  --bg-3: #220606;
+  --line: #3a0a0a;
+  --line-2: #5a1010;
 
   --fg: #ff4d4d;
-  --fg-2: #cc3333;
-  --fg-3: #8b1f1f;
+  --fg-2: #b83333;
+  --fg-3: #7a1f1f;
 
   --primary: #ff2222;
-  --primary-2: #dc2626;
+  --primary-2: #cc1111;
   --primary-soft: rgba(255, 34, 34, 0.15);
   --primary-glow: rgba(255, 34, 34, 0.35);
-  --secondary: #dc2626;
-  --gold: #ff6666;
-  --success: #ff4444;
-  --warning: #ff5555;
-  --danger: #b91c1c;
+
+  --indigo: #cc2222;
+  --violet: #dd3333;
+  --pink: #ff5555;
+  --gold: #ff7777;
+  --green: #ff4444;
+  --red: #aa0000;
 }
 
-/* ---- Reset & base ---- */
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -79,19 +89,17 @@ body.redmode {
   -webkit-tap-highlight-color: transparent;
 }
 
-html { height: 100%; }
-
-body {
+html, body {
   height: 100%;
+  overflow: hidden;
   background: var(--bg);
   color: var(--fg);
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
   font-size: 15px;
   line-height: 1.5;
-  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  transition: background 0.3s, color 0.3s;
 }
 
 button {
@@ -104,13 +112,18 @@ button {
   font-size: inherit;
 }
 
-input, textarea, select { font-family: inherit; color: inherit; }
+input, textarea, select {
+  font-family: inherit;
+  color: inherit;
+}
 
-/* ---- Errbox & Bootlog ---- */
+/* ============================================================
+   3. ERROR / BOOT
+   ============================================================ */
 #errbox {
   position: fixed;
   top: 0; left: 0; right: 0;
-  background: var(--danger);
+  background: var(--red);
   color: #fff;
   padding: 10px 14px;
   font-size: 11px;
@@ -124,61 +137,71 @@ input, textarea, select { font-family: inherit; color: inherit; }
 
 #bootlog {
   position: fixed;
-  top: 12px; left: 50%;
+  top: 16px;
+  left: 50%;
   transform: translateX(-50%);
   background: var(--primary);
-  color: #05070f;
+  color: #04060f;
   padding: 6px 14px;
   font-size: 10px;
   z-index: 9998;
   font-family: ui-monospace, monospace;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   border-radius: var(--r-pill);
   box-shadow: var(--sh-2);
 }
 
-/* ---- Header flotante ---- */
+/* ============================================================
+   4. APP CONTAINER (flexbox)
+   ============================================================ */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ============================================================
+   5. HEADER
+   ============================================================ */
 #header {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  z-index: 90;
-  height: var(--header-h);
-  background: var(--glass);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid var(--border);
-  border-radius: var(--r-4);
+  flex-shrink: 0;
+  height: var(--hdr-h);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg);
+}
+
+.brand {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 14px;
-  box-shadow: var(--sh-2);
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
   min-width: 0;
-  overflow: hidden;
 }
 
-.logo-mark {
-  font-size: 20px;
-  color: var(--primary);
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--indigo) 100%);
+  color: #04060f;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: var(--sh-glow);
   flex-shrink: 0;
-  filter: drop-shadow(0 0 6px var(--primary-glow));
-  line-height: 1;
 }
 
-.logo-text {
+.brand-name {
   font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -191,11 +214,11 @@ input, textarea, select { font-family: inherit; color: inherit; }
 .hdr-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
-/* Estilos por ID (className se sobrescribe en JS) */
+/* Botón rojo (por ID, ya que app.js sobrescribe className) */
 #redBtn {
   width: 40px;
   height: 40px;
@@ -204,20 +227,22 @@ input, textarea, select { font-family: inherit; color: inherit; }
   align-items: center;
   justify-content: center;
   color: var(--fg-2);
-  border: 1px solid var(--border);
   background: var(--bg-2);
+  border: 1px solid var(--line);
   transition: all 0.2s;
+  flex-shrink: 0;
 }
-#redBtn svg { width: 18px; height: 18px; }
-#redBtn:active { transform: scale(0.92); background: var(--bg-3); color: var(--fg); }
+#redBtn svg { width: 18px; height: 18px; display: block; }
+#redBtn:active { transform: scale(0.92); }
 #redBtn.on {
   background: var(--primary);
-  color: #05070f;
+  color: #04060f;
   border-color: var(--primary);
   box-shadow: 0 0 0 4px var(--primary-soft);
 }
 body.redmode #redBtn.on { color: #fff; }
 
+/* Botón ubicación (por ID) */
 #locBtn {
   display: inline-flex;
   align-items: center;
@@ -226,15 +251,16 @@ body.redmode #redBtn.on { color: #fff; }
   padding: 0 14px;
   border-radius: var(--r-pill);
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   color: var(--fg-2);
   font-size: 12px;
   font-weight: 600;
   transition: all 0.2s;
-  max-width: 180px;
-  overflow: hidden;
+  max-width: 160px;
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 #locBtn:active {
   transform: scale(0.95);
@@ -242,12 +268,75 @@ body.redmode #redBtn.on { color: #fff; }
   color: var(--fg);
 }
 
-/* ---- Main ---- */
+/* ============================================================
+   6. TABS SUPERIORES (= #nav reutilizado)
+   ============================================================ */
+#nav {
+  flex-shrink: 0;
+  height: var(--tabs-h);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+#nav::-webkit-scrollbar { display: none; }
+
+/* Botones (app.js sobrescribe className con "on" o "") */
+#nav button {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg-2);
+  background: transparent;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
+
+#nav button .ico {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex-shrink: 0;
+  stroke-width: 2;
+}
+
+#nav button:active {
+  transform: scale(0.95);
+  background: var(--bg-2);
+}
+
+#nav button.on {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+  color: #04060f;
+  border-color: transparent;
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+body.redmode #nav button.on { color: #fff; }
+
+/* ============================================================
+   7. MAIN
+   ============================================================ */
 #main {
-  position: fixed;
-  top: calc(var(--header-h) + 24px);
-  bottom: calc(var(--nav-h) + 24px);
-  left: 0; right: 0;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -257,92 +346,137 @@ body.redmode #redBtn.on { color: #fff; }
 
 .page {
   display: none;
-  padding: 20px 16px 24px;
-  animation: pageIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  max-width: 640px;
-  margin: 0 auto;
+  padding: 16px 16px 32px;
+  animation: pageIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .page.active { display: block; }
 
 @keyframes pageIn {
   from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ---- Hero ---- */
+/* ============================================================
+   8. HERO (Home)
+   ============================================================ */
 .hero {
-  display: flex;
-  gap: 16px;
-  padding: 22px 20px;
-  border-radius: var(--r-4);
-  background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-1) 55%, var(--bg) 100%);
-  border: 1px solid var(--border);
-  margin-bottom: 24px;
   position: relative;
+  border-radius: var(--r-4);
+  padding: 22px 20px;
   overflow: hidden;
+  background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-1) 60%, var(--bg) 100%);
+  border: 1px solid var(--line);
+  margin-bottom: 24px;
 }
 
 .hero::before {
   content: "";
   position: absolute;
-  top: -40%; right: -20%;
-  width: 220px; height: 220px;
-  background: radial-gradient(circle, var(--primary-soft) 0%, transparent 70%);
+  top: -60px;
+  right: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
   pointer-events: none;
+  opacity: 0.7;
 }
 
-.hero-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--r-3);
-  background: var(--primary-soft);
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.55), transparent 50%),
+    radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.4), transparent 50%),
+    radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,0.5), transparent 50%),
+    radial-gradient(1px 1px at 85% 20%, rgba(255,255,255,0.35), transparent 50%);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.hero-greeting {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--primary);
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-subtitle {
+  font-size: 12px;
+  color: var(--fg-3);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  font-family: ui-monospace, monospace;
+  letter-spacing: 0.02em;
+}
+
+.hero-moon-row {
   display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-moon-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--gold) 0%, #d97706 90%);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid var(--border);
+  box-shadow:
+    0 0 24px rgba(251, 191, 36, 0.4),
+    inset -8px -8px 20px rgba(0, 0, 0, 0.35);
   position: relative;
-  z-index: 1;
 }
-.hero-icon svg { width: 32px; height: 32px; }
 
-.hero-body {
+.hero-moon-icon::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(0,0,0,0.15), transparent 60%);
+}
+
+.hero-moon-info {
   flex: 1;
   min-width: 0;
-  position: relative;
-  z-index: 1;
 }
 
-.hero-eyebrow {
-  font-size: 10px;
+.hero-moon-title {
+  font-size: 22px;
   font-weight: 800;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--primary);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--fg);
   margin-bottom: 6px;
 }
 
-.hero-title {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-  color: var(--fg);
-  margin-bottom: 8px;
-}
-
-.hero-summary {
+.hero-moon-detail {
   font-size: 13px;
   line-height: 1.5;
   color: var(--fg-2);
-  margin: 0 !important;
 }
 
-/* ---- Section head ---- */
+body.redmode .hero-moon-icon {
+  background: radial-gradient(circle at 35% 35%, #ff6666 0%, #991111 90%);
+  box-shadow: 0 0 24px rgba(255, 34, 34, 0.4);
+}
+
+/* ============================================================
+   9. SECTION HEAD
+   ============================================================ */
 .section-head {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   margin: 0 4px 12px;
 }
@@ -355,82 +489,138 @@ body.redmode #redBtn.on { color: #fff; }
   color: var(--fg-3);
 }
 
-/* ---- Tile grid ---- */
-.tile-grid {
+/* ============================================================
+   10. BENTO GRID
+   ============================================================ */
+.bento {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
-.tile {
+.bento-item {
   position: relative;
   background: var(--bg-1);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-3);
-  padding: 16px 14px;
+  padding: 16px;
   text-align: left;
-  min-height: 122px;
+  color: var(--fg);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
-  color: var(--fg);
-  transition: all 0.15s;
+  gap: 12px;
+  min-height: 116px;
   overflow: hidden;
+  transition: all 0.2s ease;
 }
 
-.tile::after {
+.bento-item::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(circle at top right, var(--primary-soft) 0%, transparent 60%);
+  top: -50%;
+  right: -30%;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, var(--primary-soft) 0%, transparent 70%);
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.25s;
   pointer-events: none;
 }
-.tile:active::after { opacity: 1; }
-.tile:active { transform: scale(0.97); border-color: var(--border-2); }
 
-.tile .ico {
-  width: 30px;
-  height: 30px;
+.bento-item:active {
+  transform: scale(0.97);
+  border-color: var(--line-2);
+}
+.bento-item:active::before { opacity: 1; }
+
+/* Tile grande — horizontal */
+.bento-large {
+  grid-column: span 2;
+  flex-direction: row;
+  align-items: center;
+  min-height: 96px;
+  gap: 16px;
+}
+
+.bento-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-2);
+  background: var(--primary-soft);
   color: var(--primary);
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   position: relative;
   z-index: 1;
 }
 
-.tile .tt {
+.bento-icon svg {
+  width: 22px;
+  height: 22px;
   display: block;
+}
+
+.bento-body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+}
+
+.bento-title {
   font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  position: relative;
-  z-index: 1;
+  color: var(--fg);
   line-height: 1.25;
+  display: block;
 }
 
-.tile .ds {
-  display: block;
+.bento-sub {
   font-size: 11px;
   color: var(--fg-3);
   line-height: 1.35;
-  position: relative;
-  z-index: 1;
+  margin-top: 4px;
+  display: block;
 }
 
-/* ---- List button ---- */
+/* Variaciones de acento */
+.bento-item[data-goto="sky"] .bento-icon {
+  background: rgba(129, 140, 248, 0.14);
+  color: var(--indigo);
+}
+.bento-item[data-goto="moon"] .bento-icon {
+  background: rgba(251, 191, 36, 0.14);
+  color: var(--gold);
+}
+.bento-item[data-goto="wiki"] .bento-icon {
+  background: rgba(167, 139, 250, 0.14);
+  color: var(--violet);
+}
+.bento-item[data-goto="journal"] .bento-icon {
+  background: rgba(52, 211, 153, 0.14);
+  color: var(--green);
+}
+.bento-item[data-goto="astro"] .bento-icon {
+  background: rgba(244, 114, 182, 0.14);
+  color: var(--pink);
+}
+
+/* ============================================================
+   11. LIST BUTTON
+   ============================================================ */
 .list-btn {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   padding: 14px 16px;
   background: var(--bg-1);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-3);
   color: var(--fg);
   text-align: left;
@@ -440,19 +630,20 @@ body.redmode #redBtn.on { color: #fff; }
 .list-btn:active { transform: scale(0.98); background: var(--bg-2); }
 
 .lb-icon {
-  width: 42px; height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--r-2);
   background: var(--bg-2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
   color: var(--primary);
+  flex-shrink: 0;
 }
-.lb-icon svg { width: 20px; height: 20px; }
+.lb-icon svg { width: 20px; height: 20px; display: block; }
 
 .lb-body { flex: 1; min-width: 0; }
+
 .lb-title {
   display: block;
   font-size: 14px;
@@ -465,16 +656,20 @@ body.redmode #redBtn.on { color: #fff; }
   color: var(--fg-3);
   margin-top: 2px;
 }
+
 .lb-arrow {
   color: var(--fg-3);
-  font-size: 16px;
+  font-size: 18px;
   flex-shrink: 0;
+  font-weight: 300;
 }
 
-/* ---- Cards ---- */
+/* ============================================================
+   12. CARDS
+   ============================================================ */
 .card {
   background: var(--bg-1);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-3);
   padding: 16px;
   margin-bottom: 12px;
@@ -487,7 +682,7 @@ body.redmode #redBtn.on { color: #fff; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--fg-3);
-  margin: 0 0 10px;
+  margin: 0 0 12px;
 }
 
 .card p {
@@ -505,12 +700,15 @@ body.redmode #redBtn.on { color: #fff; }
   letter-spacing: -0.03em;
   color: var(--fg);
   margin-bottom: 6px;
+  font-family: ui-monospace, monospace;
 }
 .hl { color: var(--primary); font-weight: 700; }
 .mt10 { margin-top: 10px; }
 .full { width: 100%; }
 
-/* ---- Sky box ---- */
+/* ============================================================
+   13. SKY BOX
+   ============================================================ */
 .sky-box {
   position: relative;
   width: 100%;
@@ -518,7 +716,7 @@ body.redmode #redBtn.on { color: #fff; }
   border-radius: var(--r-3);
   overflow: hidden;
   background: radial-gradient(circle at center, #0a1430 0%, #02040a 100%);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   touch-action: none;
   margin-bottom: 12px;
 }
@@ -533,23 +731,24 @@ body.redmode #redBtn.on { color: #fff; }
 
 .sky-hint {
   position: absolute;
-  bottom: 10px;
-  left: 10px; right: 10px;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
   text-align: center;
   font-size: 11px;
   color: var(--fg-2);
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(4, 6, 15, 0.85);
   padding: 8px 12px;
   border-radius: var(--r-pill);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   pointer-events: none;
   transition: opacity 0.5s;
 }
 .sky-hint.gone { opacity: 0; }
 
-/* ---- Chips ---- */
+/* ============================================================
+   14. CHIPS
+   ============================================================ */
 .chips {
   display: flex;
   gap: 8px;
@@ -559,7 +758,7 @@ body.redmode #redBtn.on { color: #fff; }
 
 .chip {
   background: var(--bg-1);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   padding: 8px 14px;
   border-radius: var(--r-pill);
   font-size: 12px;
@@ -567,17 +766,22 @@ body.redmode #redBtn.on { color: #fff; }
   color: var(--fg-2);
   transition: all 0.15s;
   white-space: nowrap;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
 }
 .chip:active { transform: scale(0.95); }
 .chip.on {
   background: var(--primary);
-  color: #05070f;
+  color: #04060f;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px var(--primary-soft);
+  box-shadow: 0 4px 14px var(--primary-glow);
 }
 body.redmode .chip.on { color: #fff; }
 
-/* ---- List items ---- */
+/* ============================================================
+   15. LIST ITEMS
+   ============================================================ */
 .list {
   display: flex;
   flex-direction: column;
@@ -590,7 +794,7 @@ body.redmode .chip.on { color: #fff; }
   gap: 12px;
   padding: 12px;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-2);
   cursor: pointer;
   min-height: 56px;
@@ -599,7 +803,8 @@ body.redmode .chip.on { color: #fff; }
 .item:active { background: var(--bg-3); transform: scale(0.99); }
 
 .item .dot {
-  width: 8px; height: 8px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--primary);
   flex-shrink: 0;
@@ -619,6 +824,9 @@ body.redmode .chip.on { color: #fff; }
   font-size: 11px;
   color: var(--fg-3);
   margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .item .val {
   font-size: 11px;
@@ -628,14 +836,16 @@ body.redmode .chip.on { color: #fff; }
   flex-shrink: 0;
 }
 
-/* ---- Field / forms ---- */
+/* ============================================================
+   16. FORM FIELDS
+   ============================================================ */
 .field { margin-bottom: 12px; }
 
 .field label {
   display: block;
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--fg-3);
   margin-bottom: 6px;
@@ -645,9 +855,9 @@ body.redmode .chip.on { color: #fff; }
 .field textarea {
   width: 100%;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-2);
-  padding: 12px;
+  padding: 12px 14px;
   font-size: 14px;
   color: var(--fg);
   outline: none;
@@ -658,7 +868,11 @@ body.redmode .chip.on { color: #fff; }
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-soft);
 }
-.field textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+.field textarea {
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.5;
+}
 
 input[type=range] {
   -webkit-appearance: none;
@@ -672,11 +886,20 @@ input[type=range] {
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 22px; height: 22px;
+  width: 22px;
+  height: 22px;
   background: var(--primary);
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 0 0 4px var(--primary-soft);
+  border: 3px solid var(--bg);
+}
+input[type=range]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
   border: 3px solid var(--bg);
 }
 
@@ -689,15 +912,17 @@ input[type=range]::-webkit-slider-thumb {
   font-family: ui-monospace, monospace;
 }
 
-/* ---- Buttons ---- */
+/* ============================================================
+   17. BUTTONS
+   ============================================================ */
 .btn {
   width: 100%;
   padding: 14px;
   border-radius: var(--r-2);
   font-size: 14px;
   font-weight: 700;
-  background: var(--primary);
-  color: #05070f;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+  color: #04060f;
   text-align: center;
   min-height: 48px;
   display: inline-flex;
@@ -706,6 +931,7 @@ input[type=range]::-webkit-slider-thumb {
   gap: 8px;
   transition: all 0.15s;
   margin-bottom: 8px;
+  box-shadow: 0 4px 14px var(--primary-glow);
 }
 .btn:active { transform: scale(0.97); filter: brightness(0.92); }
 body.redmode .btn { color: #fff; }
@@ -713,11 +939,14 @@ body.redmode .btn { color: #fff; }
 .btn.ghost {
   background: var(--bg-2);
   color: var(--fg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
+  box-shadow: none;
 }
 .btn.ghost:active { background: var(--bg-3); }
 
-/* ---- Empty ---- */
+/* ============================================================
+   18. EMPTY STATE
+   ============================================================ */
 .empty {
   text-align: center;
   padding: 24px 16px;
@@ -726,11 +955,13 @@ body.redmode .btn { color: #fff; }
   line-height: 1.6;
 }
 
-/* ---- Journal ---- */
+/* ============================================================
+   19. JOURNAL
+   ============================================================ */
 .journal-item {
   position: relative;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-2);
   padding: 14px;
   margin-bottom: 8px;
@@ -738,7 +969,7 @@ body.redmode .btn { color: #fff; }
 .journal-item .date {
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fg-3);
   margin-bottom: 6px;
@@ -764,8 +995,10 @@ body.redmode .btn { color: #fff; }
 }
 .journal-item .del {
   position: absolute;
-  top: 8px; right: 8px;
-  width: 32px; height: 32px;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -776,30 +1009,37 @@ body.redmode .btn { color: #fff; }
 }
 .journal-item .del:active {
   background: var(--bg-3);
-  color: var(--danger);
+  color: var(--red);
 }
 
-/* ---- Result box ---- */
+/* ============================================================
+   20. RESULT BOX
+   ============================================================ */
 .result {
   margin-top: 10px;
   padding: 12px;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-2);
   font-size: 13px;
   line-height: 1.55;
   color: var(--fg);
   min-height: 20px;
 }
-.result b { color: var(--primary); font-family: ui-monospace, monospace; }
-.result .ok { color: var(--success); font-weight: 700; }
+.result b {
+  color: var(--primary);
+  font-family: ui-monospace, monospace;
+}
+.result .ok { color: var(--green); font-weight: 700; }
 .result .warn { color: var(--gold); font-weight: 700; }
-.result .bad { color: var(--danger); font-weight: 700; }
+.result .bad { color: var(--red); font-weight: 700; }
 
-/* ---- Wiki ---- */
+/* ============================================================
+   21. WIKI
+   ============================================================ */
 .wiki-card {
   background: var(--bg-1);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-3);
   padding: 14px;
   margin-bottom: 8px;
@@ -840,7 +1080,7 @@ body.redmode .btn { color: #fff; }
   display: none;
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
 }
 .wiki-card.open .body { display: block; }
 .wiki-card .data {
@@ -890,7 +1130,9 @@ body.redmode .btn { color: #fff; }
   margin: 16px 4px 8px;
 }
 
-/* ---- Moon calendar ---- */
+/* ============================================================
+   22. MOON CALENDAR
+   ============================================================ */
 .moon-big-canvas {
   display: block;
   margin: 0 auto 12px;
@@ -906,10 +1148,11 @@ body.redmode .btn { color: #fff; }
 }
 
 .moon-nav-btn {
-  width: 44px; height: 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   color: var(--primary);
   font-size: 14px;
   font-weight: 700;
@@ -952,7 +1195,7 @@ body.redmode .btn { color: #fff; }
   position: relative;
   padding-bottom: 100%;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-1);
   cursor: pointer;
   transition: all 0.15s;
@@ -968,25 +1211,30 @@ body.redmode .btn { color: #fff; }
   border-color: var(--primary);
   background: var(--primary-soft);
 }
-.moon-cell.today { border-color: var(--success); }
+.moon-cell.today { border-color: var(--green); }
 .moon-cell canvas {
   position: absolute;
-  top: 8%; left: 15%;
-  width: 70%; height: 70%;
+  top: 8%;
+  left: 15%;
+  width: 70%;
+  height: 70%;
 }
 .moon-cell .num {
   position: absolute;
-  bottom: 4%; left: 0; right: 0;
+  bottom: 4%;
+  left: 0;
+  right: 0;
   text-align: center;
   font-size: 10px;
   font-weight: 700;
   color: var(--fg-3);
 }
-.moon-cell.today .num { color: var(--success); }
+.moon-cell.today .num { color: var(--green); }
 .moon-cell.selected .num { color: var(--primary); }
 .moon-cell .special {
   position: absolute;
-  top: 2%; right: 5%;
+  top: 3%;
+  right: 6%;
   font-size: 10px;
   font-weight: 800;
   color: var(--gold);
@@ -997,7 +1245,7 @@ body.redmode .btn { color: #fff; }
   margin-top: 14px;
   padding: 12px;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-2);
   font-size: 12px;
   color: var(--fg-2);
@@ -1026,22 +1274,26 @@ body.redmode .btn { color: #fff; }
 }
 .moon-day-block .hl2 { color: var(--primary); font-weight: 700; }
 .moon-day-block .warn2 { color: var(--gold); font-weight: 700; }
-.moon-day-block .ok2 { color: var(--success); font-weight: 700; }
+.moon-day-block .ok2 { color: var(--green); font-weight: 700; }
 
-/* ---- Chart ---- */
+/* ============================================================
+   23. VISIBILITY CHART
+   ============================================================ */
 #visChart {
   display: block;
   width: 100%;
   height: auto;
   background: var(--bg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-2);
 }
 
-/* ---- Toast ---- */
+/* ============================================================
+   24. TOAST
+   ============================================================ */
 #toast {
   position: fixed;
-  bottom: calc(var(--nav-h) + 24px);
+  bottom: 28px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
   background: var(--bg-2);
@@ -1058,180 +1310,22 @@ body.redmode .btn { color: #fff; }
   max-width: calc(100vw - 40px);
   text-align: center;
   box-shadow: var(--sh-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 #toast.on {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-/* ---- Dock inferior ---- */
-#nav {
-  position: fixed;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
-  z-index: 100;
-  height: var(--nav-h);
-  background: var(--glass);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid var(--border);
-  border-radius: var(--r-4);
-  box-shadow: var(--sh-3);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 6px 8px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-#nav button {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  padding: 6px 2px;
-  border-radius: var(--r-2);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--fg-3);
-  min-height: 52px;
-  transition: all 0.2s;
-}
-
-#nav button .ico {
-  width: 22px;
-  height: 22px;
-  display: block;
-  stroke-width: 2;
-  color: inherit;
-}
-
-/* Ocultar botones que no van al dock (accesibles vía menú) */
-#nav button:not([data-dock]) {
-  display: none;
-}
-
-#nav button.on {
-  color: var(--primary);
-  background: var(--primary-soft);
-}
-#nav button.on .ico {
-  filter: drop-shadow(0 0 6px var(--primary-glow));
-}
-
-#nav button.menu-toggle { color: var(--fg-2); }
-#nav button.menu-toggle:active {
-  background: var(--bg-2);
-  transform: scale(0.92);
-}
-
-/* ---- Menu sheet ---- */
-.menu-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 150;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s;
-}
-.menu-backdrop.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.menu-sheet {
-  position: fixed;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
-  z-index: 160;
-  background: var(--bg-1);
-  border: 1px solid var(--border);
-  border-radius: var(--r-4);
-  padding: 14px 20px 20px;
-  box-shadow: var(--sh-3);
-  transform: translateY(120%);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  max-width: 600px;
-  margin: 0 auto;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-.menu-sheet.open { transform: translateY(0); }
-
-.menu-sheet .sheet-handle {
-  width: 44px;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--border-2);
-  margin: 0 auto 16px;
-}
-
-.menu-sheet h2 {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--fg-3);
-  margin-bottom: 14px;
-  text-align: center;
-}
-
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.menu-tile {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: flex-start;
-  padding: 16px;
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: var(--r-3);
-  color: var(--fg);
-  text-align: left;
-  transition: all 0.15s;
-  min-height: 94px;
-}
-.menu-tile:active {
-  transform: scale(0.96);
-  background: var(--bg-3);
-  border-color: var(--primary);
-}
-
-.menu-icon {
-  font-size: 22px;
-  line-height: 1;
-  color: var(--primary);
-}
-.menu-icon svg { width: 24px; height: 24px; display: block; }
-
-.menu-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--fg);
-}
-
-/* ---- Modales ---- */
+/* ============================================================
+   25. MODALES
+   ============================================================ */
 #modal, #modalInfo {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.72);
   z-index: 200;
   display: none;
   align-items: flex-end;
@@ -1243,9 +1337,9 @@ body.redmode .btn { color: #fff; }
 #sheet, #sheetInfo {
   position: relative;
   background: var(--bg-1);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-4);
-  padding: 26px 20px 20px;
+  padding: 28px 20px 20px;
   width: 100%;
   max-width: 520px;
   max-height: 85vh;
@@ -1257,18 +1351,18 @@ body.redmode .btn { color: #fff; }
 #sheet::before, #sheetInfo::before {
   content: "";
   position: absolute;
-  top: 10px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%);
   width: 44px;
   height: 4px;
   border-radius: 2px;
-  background: var(--border-2);
+  background: var(--line-2);
 }
 
 @keyframes sheetIn {
   from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 #sheet h2, #sheetInfo h2 {
@@ -1276,7 +1370,7 @@ body.redmode .btn { color: #fff; }
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--fg);
-  margin: 4px 0 14px;
+  margin: 6px 0 14px;
 }
 #sheetInfo h2 { color: var(--primary); }
 
@@ -1313,7 +1407,7 @@ body.redmode .btn { color: #fff; }
   margin: 10px 0;
   padding: 12px;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: var(--r-2);
 }
 #sheetInfo .wikidata .k {
@@ -1328,21 +1422,29 @@ body.redmode .btn { color: #fff; }
   font-family: ui-monospace, monospace;
 }
 
-/* ---- Modo rojo: sky box ---- */
+/* ============================================================
+   26. Modo rojo: sky box
+   ============================================================ */
 body.redmode .sky-box {
   background: radial-gradient(circle at center, #200404 0%, #050000 100%);
 }
 
-/* ---- Responsive ---- */
+body.redmode .hero::before {
+  background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+}
+
+/* ============================================================
+   27. Responsive
+   ============================================================ */
 @media (max-width: 360px) {
-  .tile .tt { font-size: 13px; }
-  .tile .ds { font-size: 10px; }
-  #nav button { font-size: 9px; }
-  .hero { padding: 18px 16px; }
-  .hero-title { font-size: 20px; }
+  .hero-moon-title { font-size: 20px; }
+  .bento-title { font-size: 13px; }
+  .bento-sub { font-size: 10px; }
+  #nav button { font-size: 12px; padding: 0 12px; }
+  #locBtn { max-width: 100px; }
 }
 
 @media (min-width: 600px) {
-  .tile-grid { grid-template-columns: repeat(3, 1fr); }
-  .menu-grid { grid-template-columns: repeat(4, 1fr); }
+  .bento { grid-template-columns: repeat(3, 1fr); }
+  .bento-large { grid-column: span 2; }
 }
